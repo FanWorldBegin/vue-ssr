@@ -30,6 +30,10 @@ const config = {
             test: /\.js$/,
             loader: 'babel-loader'
           },
+          {
+            test: /\.jsx$/,
+            loader: 'babel-loader'
+          },
           // this will apply to both plain .css files
           // AND <style> blocks in vue files
           {
@@ -55,10 +59,17 @@ const config = {
             ]
           },
           {
-            test: /\.styl$/,
+            test: /\.styl(us)?$/,
             use: [
                 'vue-style-loader',
                 'css-loader',
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        //stylus-loader 会生成sourceMap 直接使用他生成的，提高效率
+                        sourceMap: true,
+                    }
+                },
                 'stylus-loader'
             ]
           },
@@ -95,7 +106,7 @@ if(isDev) {
     //调试代码，可以在浏览器里面看到自己写的代码, 而不是打包后的
     config.devtool = '#cheap-module-eval-source-map';
     config.devServer = {
-       port: 8000,
+       port: 8001,
        host: '0.0.0.0', //可以通过IP访问，其他设备也可以
        overlay: {
            errors: true, // 显示错误
