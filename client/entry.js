@@ -3,8 +3,8 @@ import APP from './app.vue'
 import './assets/styles/test.css'
 import './assets/styles/global.styl'
 
-const root = document.createElement('div');
+const root = document.createElement('div')
 document.body.appendChild(root)
 new Vue({
-    render: (h) => h(APP)
+  render: (h) => h(APP)
 }).$mount(root)

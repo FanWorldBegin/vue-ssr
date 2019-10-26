@@ -2,18 +2,18 @@ const path = require('path'); // 使用绝对路径
 const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack')
 const HTMLPlugin = require('html-webpack-plugin')
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDev = process.env.NODE_ENV === 'development'
 
 //__dirname
 const config = {
     target: 'web', //编译目标
-    entry: path.join(__dirname, 'src/entry.js' ),
+    entry: path.join(__dirname, 'client/entry.js' ),
 
     output: {
         //输出路径
-        filename: 'bundle.js',
+        filename: 'bundle.[hash:8].js',
         path: path.join(__dirname, 'dists')
     },
     mode: 'development',
@@ -59,21 +59,6 @@ const config = {
             ]
           },
           {
-            test: /\.styl(us)?$/,
-            use: [
-                'vue-style-loader',
-                'css-loader',
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        //stylus-loader 会生成sourceMap 直接使用他生成的，提高效率
-                        sourceMap: true,
-                    }
-                },
-                'stylus-loader'
-            ]
-          },
-          {
               test: /\.(gif|jpg|png|svg)$/,
               use: [
                   {
@@ -103,6 +88,22 @@ const config = {
 }
 
 if(isDev) {
+  config.module.rules.push(         
+  {
+    test: /\.styl(us)?$/,
+    use: [
+        'vue-style-loader',
+        'css-loader',
+        {
+            loader: 'postcss-loader',
+            options: {
+                //stylus-loader 会生成sourceMap 直接使用他生成的，提高效率
+                sourceMap: true,
+            }
+        },
+        'stylus-loader'
+    ]
+  },)
     //调试代码，可以在浏览器里面看到自己写的代码, 而不是打包后的
     config.devtool = '#cheap-module-eval-source-map';
     config.devServer = {
@@ -125,6 +126,46 @@ if(isDev) {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
     )
+
+} else {
+
+  //生产环境
+
+  config.plugins.push(    
+    new MiniCssExtractPlugin({
+    // Options similar to the same options in webpackOptions.output
+    // all options are optional
+    filename: '[name].css',
+    chunkFilename: '[id].css',
+    ignoreOrder: false, // Enable to remove warnings about conflicting order
+  }))
+  //正是环境下
+  config.output.filename = '[name].[chunkhash:8].js'
+
+  config.module.rules.push({
+    test: /\.styl(us)?$/,
+    use: [
+      {
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          // you can specify a publicPath here
+          // by default it uses publicPath in webpackOptions.output
+          // publicPath: '../',
+          // hmr: process.env.NODE_ENV === 'development',
+        },
+      },
+      //'vue-style-loader', //style loader 在css外包js 这里不需要
+      'css-loader',
+      {
+          loader: 'postcss-loader',
+          options: {
+              //stylus-loader 会生成sourceMap 直接使用他生成的，提高效率
+              sourceMap: true,
+          }
+      },
+      'stylus-loader'
+    ],
+  })
 
 }
 
