@@ -6,4 +6,5 @@
 // import './component/define'
 // import './component/extend'
 // import './component/v-model'
-import './component/feature'
+// import './component/feature'
+import './component/ref'

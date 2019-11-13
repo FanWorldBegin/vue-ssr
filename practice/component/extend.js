@@ -31,6 +31,7 @@ const parent = new Vue({
   name: 'Parent'
 })
 
+// 继承组件component
 const componet2 = {
   extends: compoent,
   data () {
@@ -39,7 +40,7 @@ const componet2 = {
     }
   },
   mounted () {
-    console.log(this.$parent.$options.name)
+    console.log('componet2:' + this.$parent.$options.name)
   }
 }
 
@@ -85,7 +86,7 @@ new Vue({
     Comp: componet2
   },
   mounted () {
-    console.log(this.$parent.$options.name)
+    console.log('new Vue this.$parent.$options.name: ' + this.$parent.$options.name)
   },
   data: {
     text: 23333
@@ -93,7 +94,7 @@ new Vue({
   template: `
     <div>
       <span>{{text}}</span>
-      <comp></comp>
+      <Comp></Comp>
     </div>
   `
 })
