@@ -8,7 +8,9 @@ const ChildComponent = {
     console.log(this.grandParent, this.data)
   }
 }
+
 // 布局组件
+
 const component = {
   name: 'comp',
   template: `

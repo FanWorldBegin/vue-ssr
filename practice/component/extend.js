@@ -40,7 +40,7 @@ const componet2 = {
     }
   },
   mounted () {
-    console.log('componet2:' + this.$parent.$options.name)
+    console.log(''this.$parent.$options.name)
   }
 }
 
