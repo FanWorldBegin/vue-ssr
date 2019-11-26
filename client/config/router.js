@@ -13,6 +13,26 @@ import routes from './routes'
 // 创建router实例
 export default () => {
   return new Router({
-    routes
+    routes,
+    mode: 'history',
+    base: '/base/',
+    linkExactActiveClass: 'exact-active-link',
+    linkActiveClass: 'active-class',
+    scrollBehavior (to, form, savedPosition) {
+      // savedPosition 进入过本路由会记录位置
+      if (savedPosition) {
+        return savedPosition
+      } else {
+        return { x: 0, y: 0 }
+      }
+    }
+    // parseQuery (query) {
+    //   // 参数query字符串 字符串转jsonObject
+
+    // },
+    // stringifyQuery (obj) {
+    //   // 参数Obj
+    // },
+    // fallback: true
   })
 }

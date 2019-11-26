@@ -33,8 +33,12 @@ const devServer = {
   //    historyFallback: {
   //        //webpack-dev-server 中没有映射的地址映射到index.html
   //    },
-  hot: true // 重新渲染当页面代码
+  hot: true, // 重新渲染当页面代码
+  historyApiFallback: {
+    index: '/public/index.html' // 设置为根目录下的index.html
+    // htmlPlugin 生成的html的位置，注意这个路径和public路经有关
 
+  }
   // open: true, // 自动打开浏览器
 }
 

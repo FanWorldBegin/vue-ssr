@@ -19,6 +19,7 @@
       @togole="togoleFilter"
       @clearAllCompleted="clearAllCompleted"
     />
+    <router-view />
   </section>
 </template>
 
@@ -28,10 +29,29 @@ import Tabs from './tabs.vue'
 let id = 0
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    console.log('【todo】 before enter')
+    // vm可以访问组件this
+    next(vm => {
+      console.log('after enter this.id', vm.id)
+    })
+  },
+  beforeRouteUpdate (to, from, next) {
+    console.log('【todo】 before Update')
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    // 判断表单修改，弹确认框
+    console.log('【todo】 before leave')
+    if (global.confirm('are you sure')) {
+      next()
+    }
+  },
   components: {
     Item,
     Tabs
   },
+  props: ['id'],
   data () {
     return {
       todos: [],
@@ -46,6 +66,9 @@ export default {
       const completed = this.filter === 'completed'
       return this.todos.filter(todo => completed === todo.completed)
     }
+  },
+  mounted () {
+    console.log(this.id)
   },
   methods: {
     addTodo (e) {

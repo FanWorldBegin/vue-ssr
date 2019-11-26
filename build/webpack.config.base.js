@@ -10,7 +10,8 @@ const config = {
   output: {
     // 输出路径
     filename: 'bundle.[hash:8].js',
-    path: path.join(__dirname, '../dists')
+    path: path.join(__dirname, '../dists'),
+    publicPath: '/public/'
   },
   module: {
 
