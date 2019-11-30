@@ -14,7 +14,7 @@ export default [
     // },
     name: 'appName',
     meta: {
-      title: 'this is app',
+      title: 'this iƒs app',
       description: 'ceshiceshi1'
     },
     // children: [{

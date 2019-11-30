@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div id="cover" />
+    <p>{{ count }}</p>
     <Header />
     <!-- <Todo /> -->
     <router-link to="/app/123">
@@ -26,6 +27,7 @@
 <script>
 import Header from './layout/header.vue'
 import Footer from './layout/footer.jsx'
+import { setInterval } from 'timers'
 // import Todo from './views/todo/todo.vue'
 export default {
   components: {
@@ -38,8 +40,19 @@ export default {
       text: 'abc'
     }
   },
+  computed: {
+    count () {
+      return this.$store.state.count
+    }
+  },
   mounted () {
     console.log(this.$route)
+    console.log(this.$store)
+    let i = 1
+    setInterval(() => {
+      // 调用 mutations
+      this.$store.commit('updateCount', i++)
+    }, 1000)
   }
 }
 
