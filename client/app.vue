@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="cover" />
-    <p>{{ count }}</p>
+    <p>{{ fullName }} {{ count }}</p>
     <Header />
     <!-- <Todo /> -->
     <router-link to="/app/123">
@@ -25,9 +25,14 @@
 </template>
 
 <script>
+import {
+  mapState,
+  mapGetters,
+  mapActions,
+  mapMutations
+} from 'Vuex'
 import Header from './layout/header.vue'
 import Footer from './layout/footer.jsx'
-import { setInterval } from 'timers'
 // import Todo from './views/todo/todo.vue'
 export default {
   components: {
@@ -40,18 +45,44 @@ export default {
       text: 'abc'
     }
   },
+  methods: {
+    ...mapActions(['updateCountAsync']),
+    ...mapMutations(['updateCount'])
+  },
   computed: {
-    count () {
-      return this.$store.state.count
-    }
+    // ...mapState(['count']),
+    ...mapState({
+      count: 'count',
+      counter: (state) => state.count // 可以进行计算
+    }),
+    ...mapGetters(['fullName'])
+    // count () {
+    //   return this.$store.state.count
+    // },
+    // fullName () {
+    //   return this.$store.getters.fullName
+    // }
   },
   mounted () {
     console.log(this.$route)
     console.log(this.$store)
     let i = 1
+    // this.$store.state.count = 3
+
+    // this.$store.dispatch('updateCountAsync', {
+    //   num: 5,
+    //   time: 2000
+    // })
+    this.updateCountAsync({
+      num: 5,
+      time: 2000
+    })
     setInterval(() => {
       // 调用 mutations
-      this.$store.commit('updateCount', i++)
+      this.updateCount({
+        num: i++,
+        num2: 2
+      })
     }, 1000)
   }
 }
