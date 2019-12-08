@@ -17,6 +17,19 @@ Vue.use(Vuex)
 const router = createRouter()
 const store = createStore() // 创建store
 
+// 注册模块
+store.registerModule('C', {
+  state: {
+    text: 3
+  }
+})
+// 解绑模块
+store.unregisterModule('C')
+
+store.watch((state) => state.count + 1, (newCount) => {
+  // console.log('new count watched:', newCount)
+})
+
 router.beforeEach((to, from, next) => {
   next()
   console.log('【entry】before each invoked')
@@ -33,6 +46,17 @@ router.beforeResolve((to, from, next) => {
 
 router.afterEach((to, from) => {
   console.log('【entry】before afterEach invoked')
+})
+
+// store.subscribe((mutation, state) => {
+//   console.log(mutation.type)
+//   console.log(mutation.payload) // mutationj接收到的参数
+// })
+
+store.subscribeAction((action, state) => {
+  console.log('subscribeAction')
+  console.log(action.type)
+  console.log(action.payload) // mutationj接收到的参数
 })
 // 记得要通过 router 配置参数注入路由，
 // 从而让整个应用都有路由功能

@@ -2,6 +2,7 @@
   <div id="app">
     <div id="cover" />
     <p>{{ fullName }} {{ count }}</p>
+    <p>{{ textA }}</p>
     <Header />
     <!-- <Todo /> -->
     <router-link to="/app/123">
@@ -46,16 +47,25 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['updateCountAsync']),
-    ...mapMutations(['updateCount'])
+    // textActions 为 模块B的，B没有nameSpace
+    ...mapActions(['updateCountAsync', 'a/add', 'textAction']),
+    ...mapMutations(['updateCount', 'a/updateText'])
   },
   computed: {
+    textA () {
+      return this.$store.state.a.text
+    },
     // ...mapState(['count']),
     ...mapState({
       count: 'count',
-      counter: (state) => state.count // 可以进行计算
+      counter: (state) => state.count, // 可以进行计算
+      textC: state => state.c.text
     }),
-    ...mapGetters(['fullName'])
+    // ...mapGetters(['fullName', 'a/textPlus'])
+    ...mapGetters({
+      fullName: 'fullName',
+      textPlus: 'a/textPlus'
+    })
     // count () {
     //   return this.$store.state.count
     // },
@@ -64,9 +74,11 @@ export default {
     // }
   },
   mounted () {
+    this['a/updateText']('123')
+    this.textAction()
     console.log(this.$route)
     console.log(this.$store)
-    let i = 1
+    // let i = 1
     // this.$store.state.count = 3
 
     // this.$store.dispatch('updateCountAsync', {
@@ -77,13 +89,13 @@ export default {
       num: 5,
       time: 2000
     })
-    setInterval(() => {
-      // 调用 mutations
-      this.updateCount({
-        num: i++,
-        num2: 2
-      })
-    }, 1000)
+    // setInterval(() => {
+    //   // 调用 mutations
+    //   this.updateCount({
+    //     num: i++,
+    //     num2: 2
+    //   })
+    // }, 1000)
   }
 }
 
@@ -91,19 +103,19 @@ export default {
 
 <style scoped lang="stylus">
 #app
-    position absolute
-    left 0
-    right 0
-    top 0
-    bottom 0
-    #cover
-        position absolute
-        left 0
-        right 0
-        top 0
-        bottom 0
-        background-color #999
-        opacity 0.2
-        z-index -1
+  position absolute
+  left 0
+  right 0
+  top 0
+  bottom 0
+  #cover
+      position absolute
+      left 0
+      right 0
+      top 0
+      bottom 0
+      background-color #999
+      opacity 0.2
+      z-index -1
 
 </style>
