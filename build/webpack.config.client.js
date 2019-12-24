@@ -3,7 +3,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack')
 const HTMLPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
+const VueCLientPlugin = require('vue-server-renderer/client-plugin')
 const merge = require('webpack-merge') // 合c并不同文件的配置
 const baseConfig = require('./webpack.config.base')
 const isDev = process.env.NODE_ENV === 'development'
@@ -20,7 +20,8 @@ const defaultPluins = [
   new VueLoaderPlugin(),
   new HTMLPlugin({
     template: path.join(__dirname, 'template.html')
-  })
+  }),
+  new VueCLientPlugin()
 ]
 let config
 
