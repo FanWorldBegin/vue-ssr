@@ -3,6 +3,7 @@
 const path = require('path') // 使用绝对路径
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 const merge = require('webpack-merge') // 合c并不同文件的配置
 const baseConfig = require('./webpack.config.base')
@@ -19,10 +20,10 @@ const config = merge(baseConfig, {
     libraryTarget: 'commonjs2', // 4. 在服务度端运行，指定代码export出去入口怎样
     // nodejs 是module.exports =  引用出去nodejs可以直接引用
     filename: 'server-entry.js', // 5. 指定名字，不需要哈希模块加载
-    path: path.join(__dirname, '../server-build'), // 6.制定输出路径
-    externals: Object.keys(require('../package.json').dependencies)
-    // 7.由于程序跑在node端，不需要把vue代码打包到输出文件中，只需要require就可以 (npm i vue -S)
+    path: path.join(__dirname, '../server-build') // 6.制定输出路径
   },
+  externals: Object.keys(require('../package.json').dependencies),
+  // 7.由于程序跑在node端，不需要把vue代码打包到输出文件中，只需要require就可以 (npm i vue -S)
   module: {
     rules: [
       {
@@ -30,6 +31,9 @@ const config = merge(baseConfig, {
         use: [
           {
             loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader'
           },
           {
             loader: 'postcss-loader',
@@ -65,6 +69,7 @@ const config = merge(baseConfig, {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.VUE_ENV': "'server"
     }),
+    new VueLoaderPlugin(),
     new VueServerPlugin() // 打包会生成一个json文件
   ]
 })

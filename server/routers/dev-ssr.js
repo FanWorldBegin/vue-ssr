@@ -1,3 +1,5 @@
+// 获取webpack 配置
+
 // node 目前不支持import
 const Router = require('koa-router')
 const axios = require('axios')
@@ -9,7 +11,8 @@ const fs = require('fs')
 // 服务端渲染
 const VueServerRenderer = require('vue-server-renderer')
 
-const serverConfig = require('../../build/webpack.conifg.server')
+const serverRender = require('./server-render')
+const serverConfig = require('../../build/webpack.config.server')
 // 1.nodejs里面编译webpack, 可以生成一个在服务端运行的bundle - serverCompiler，可以直接run
 
 const serverCompiler = webpack(serverConfig)
@@ -27,10 +30,10 @@ serverCompiler.watch({}, (err, states) => {
   states = states.toJson()
 
   // 当不是打包错误（eslint）不会出现在err里面，会出现在states里
-  status.erros.forEach(err => console.log(err))
-  status.hasWarnings.forEach(warn => console.warn(warn))
+  states.errors.forEach(err => console.log(err))
+  states.warnings.forEach(warn => console.warn(warn))
   // 以上为webpack相关配置
-
+  // cconsole.log(serverConfig)
   // 获取输出路径
   const boundlePath = path.join(
     // 2.输出目录为webpack 中指定的 ../server-build
@@ -40,18 +43,20 @@ serverCompiler.watch({}, (err, states) => {
   )
   // 读出字符串而不是二进制utf-8
   bundle = JSON.parse(mfs.readFileSync(boundlePath, 'utf-8'))
+  console.log('new bundle generated')
 })
 
 // koa 的中间件，处理服务端渲染返回的东西
 const handleSSR = async (ctx) => {
+  console.log('handleSSR')
   // 第一次打包bundle可能不存在
-  if (!bundle) {
+  if (bundle) {
     ctx.body = '等一会别着急......'
     return
   }
-  
+
   const clientManifestResp = await axios.get(
-    'http:127.0.0.1:8000/vue-ssr-cient-manifest.json'
+    'http:127.0.0.1:8000/public/vue-ssr-cient-manifest.json'
   )
 
   const clientManifest = clientManifestResp.data
@@ -59,9 +64,18 @@ const handleSSR = async (ctx) => {
     path.join(__dirname, '../server.template.ejs')
   )
   // 1.传入bundle 会生成一个可以执行render 的function
-  const render = VueServerRenderer
+  const renderer = VueServerRenderer
     .createBundleRenderer(bundle, {
       inject: 'false', // 按照官方规定的模版可以直接注入（这里不要）
       clientManifest // 生成有js标签的字符串
     })
+
+  await serverRender(ctx, renderer, template)
 }
+
+const router = new Router()
+
+// 所有请求都通过 handleSSR处理
+router.get('*', handleSSR)
+
+module.exports = router

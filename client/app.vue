@@ -39,7 +39,6 @@ export default {
   components: {
     Header,
     Footer
-    // Todo
   },
   data () {
     return {
