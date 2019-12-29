@@ -4,7 +4,8 @@ export default [
     redirect: '/app' // 默认路由跳转
   },
   {
-    path: '/app/:id',
+    // path: '/app/:id',
+    path: '/app',
     props: true,
     // props: (route) => ({ id: route.query.b }),
     component: () => import('../views/todo/todo.vue'),

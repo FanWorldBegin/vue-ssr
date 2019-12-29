@@ -30,7 +30,7 @@ const config = merge(baseConfig, {
         test: /\.styl(us)?$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: 'vue-style-loader'
           },
           {
             loader: 'css-loader'
@@ -55,13 +55,6 @@ const config = merge(baseConfig, {
     }
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // all options are optional
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-      ignoreOrder: false // Enable to remove warnings about conflicting order
-    }),
     // make sure to include the plugin for the magic
     // 可以在页面中获取变量进行判断,js 中可以获取，区别打包
     // 要单引号在外面，获取到是字符串

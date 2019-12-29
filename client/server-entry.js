@@ -10,7 +10,7 @@ export default context => {
 
     // 路由中所有异步操作做完后做这个回调
     router.onReady(() => {
-      // 在服务端渲染时候，亚要做异步请求，需要匹配组件
+      // 在服务端渲染时候，亚要做异步请求，需要匹配组件,根据url匹配组件
       const matchedComponents = router.getMatchedComponents()
       if (!matchedComponents.length) {
         return reject(new Error('no component Matched'))

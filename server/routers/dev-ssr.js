@@ -50,23 +50,24 @@ serverCompiler.watch({}, (err, states) => {
 const handleSSR = async (ctx) => {
   console.log('handleSSR')
   // 第一次打包bundle可能不存在
-  if (bundle) {
+  if (!bundle) {
     ctx.body = '等一会别着急......'
     return
   }
 
   const clientManifestResp = await axios.get(
-    'http:127.0.0.1:8000/public/vue-ssr-cient-manifest.json'
+    'http://127.0.0.1:8001/public/vue-ssr-client-manifest.json'
   )
 
   const clientManifest = clientManifestResp.data
   const template = fs.readFileSync(
-    path.join(__dirname, '../server.template.ejs')
+    path.join(__dirname, '../server.template.ejs'),
+    'utf-8'
   )
   // 1.传入bundle 会生成一个可以执行render 的function
   const renderer = VueServerRenderer
     .createBundleRenderer(bundle, {
-      inject: 'false', // 按照官方规定的模版可以直接注入（这里不要）
+      inject: false, // 按照官方规定的模版可以直接注入（这里不要）
       clientManifest // 生成有js标签的字符串
     })
 
