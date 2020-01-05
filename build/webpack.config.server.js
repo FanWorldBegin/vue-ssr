@@ -2,7 +2,7 @@
 
 const path = require('path') // 使用绝对路径
 const webpack = require('webpack')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
 const merge = require('webpack-merge') // 合c并不同文件的配置

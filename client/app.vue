@@ -36,6 +36,9 @@ import Header from './layout/header.vue'
 import Footer from './layout/footer.jsx'
 // import Todo from './views/todo/todo.vue'
 export default {
+  // metaInfo: {
+  //   title: "这是一个title"
+  // },
   components: {
     Header,
     Footer

@@ -1,0 +1,17 @@
+{
+  "restartable": "rs", 
+  "ignore": [
+    ".git",
+    "node_modules/**/node_mudules",
+    ".eslintrc",
+    "client",
+    "build/webpack.config.client",
+    "public",
+    "笔记/"
+  ],
+  "verbose": true,
+  "env": {
+    "NODE_ENV": "development",
+    "ext": "js json ejs"
+  }
+}
