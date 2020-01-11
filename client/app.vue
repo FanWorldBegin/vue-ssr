@@ -20,6 +20,10 @@
     <transition name="fade">
       <router-view />
     </transition>
+    <button @click="notify">
+      notify 触发
+    </button>
+    <!-- <notification content="ssss" /> -->
     <Footer />
     <!-- <router-view name='a'/> -->
   </div>
@@ -51,7 +55,13 @@ export default {
   methods: {
     // textActions 为 模块B的，B没有nameSpace
     ...mapActions(['updateCountAsync', 'a/add', 'textAction']),
-    ...mapMutations(['updateCount', 'a/updateText'])
+    ...mapMutations(['updateCount', 'a/updateText']),
+    notify () {
+      this.$notify({
+        content: 'test $notify',
+        btn: 'close'
+      })
+    }
   },
   computed: {
     textA () {
@@ -76,28 +86,10 @@ export default {
     // }
   },
   mounted () {
-    this['a/updateText']('123')
-    this.textAction()
-    console.log(this.$route)
-    console.log(this.$store)
-    // let i = 1
-    // this.$store.state.count = 3
-
-    // this.$store.dispatch('updateCountAsync', {
-    //   num: 5,
-    //   time: 2000
+    // this.$notify({
+    //   content: 'test $notify',
+    //   btn: 'close'
     // })
-    this.updateCountAsync({
-      num: 5,
-      time: 2000
-    })
-    // setInterval(() => {
-    //   // 调用 mutations
-    //   this.updateCount({
-    //     num: i++,
-    //     num2: 2
-    //   })
-    // }, 1000)
   }
 }
 

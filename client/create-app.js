@@ -8,10 +8,13 @@ import createStore from './store/store'
 import createRouter from './config/router'
 
 import './assets/styles/global.styl'
+
+import Notification from './components/notification'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 // Vue.use(VueMeta)
-
+// 定义在全局
+Vue.use(Notification)
 // m每次返回新对象，避免在node端出现内存溢出情况
 export default () => {
   const router = createRouter()

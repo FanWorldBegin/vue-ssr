@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV === 'development'
 const config = {
   mode: process.env.NODE_ENV || 'production', // development || production
   target: 'web', // 编译目标
-  entry: path.join(__dirname, '../client/entry.js'),
+  entry: path.join(__dirname, '../client/client-entry.js'),
 
   output: {
     // 输出路径

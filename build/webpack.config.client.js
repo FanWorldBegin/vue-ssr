@@ -31,6 +31,10 @@ const devServer = {
   overlay: {
     errors: true // 显示错误
   },
+  // 允许跨域 -- 仅在开发过程中
+  headers: {
+    'Access-Control-Allow-Origin': '*'
+  },
   //    historyFallback: {
   //        //webpack-dev-server 中没有映射的地址映射到index.html
   //    },
@@ -77,7 +81,7 @@ if (isDev) {
 } else {
   // 正是环境下
   config = merge(baseConfig, {
-    entry: path.join(__dirname, '../client/entry.js'),
+    entry: path.join(__dirname, '../client/client-entry.js'),
     plugins: defaultPluins.concat([
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
