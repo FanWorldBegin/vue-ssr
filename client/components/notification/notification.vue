@@ -1,9 +1,15 @@
 <template>
-  <transition name="fade">
+  <transition
+    name="fade"
+    @after-leave="afterLeave"
+    @after-enter="afterEnter"
+  >
     <div
+      v-show="visible"
       class="notification"
       :style="style"
-      v-show="visible"
+      @mouseenter="clearTimer"
+      @mouseleave="createTimer"
     >
       <span class="content">{{ content }}</span>
       <a
@@ -40,7 +46,23 @@ export default {
   methods: {
     handleClose (e) {
       e.preventDefault()
+      // 即将关闭
       this.$emit('close')
+    },
+    afterLeave () {
+      console.log('afterLeave')
+      // 已经关闭 - 在外部 function监听事件
+      this.$emit('closed')
+    },
+    afterEnter () {
+
+    },
+    clearTimer () {
+      // 默认声明鼠标移入
+
+    },
+    createTimer () {
+      // 默认声明鼠标移入
     }
   }
 }

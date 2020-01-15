@@ -27,6 +27,11 @@ export default {
       if (this.timer) {
         clearTimeout(this.timer)
       }
+    },
+    afterEnter () {
+      // 得到删除节点的高度
+      console.log('afterEnter')
+      this.height = this.$el.offsetHeight
     }
   },
   beforeDestory () {
@@ -36,7 +41,9 @@ export default {
   data () {
     return {
       verticalOffset: 0,
-      autoClose: 3000
+      autoClose: 3000,
+      height: 0,
+      visible: false
     }
   }
 }
